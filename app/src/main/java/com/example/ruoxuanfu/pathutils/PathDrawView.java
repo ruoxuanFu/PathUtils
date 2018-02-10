@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
@@ -114,12 +115,15 @@ public class PathDrawView extends android.support.v7.widget.AppCompatImageView {
         //BlurMaskFilter bmf = new BlurMaskFilter(5, BlurMaskFilter.Blur.NORMAL);//指定了一个模糊的样式和半径来处理Paint的边缘。
         //deletePaint.setMaskFilter(bmf);//为Paint分配边缘效果。
         deletePaint.setStyle(Paint.Style.STROKE);//让画出的图形是空心的
+        //指定图形混合模式
         //它的作用是用此画笔后，画笔划过的痕迹就变成透明色了。画笔设置好了后，就可以调用该画笔进行橡皮痕迹的绘制了
         deletePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         deletePaint.setStrokeJoin(Paint.Join.ROUND);//设置结合处的样子 Miter:结合处为锐角， Round:结合处为圆弧：BEVEL：结合处为直线。
         deletePaint.setStrokeCap(Paint.Cap.ROUND);//画笔笔刷类型   圆形形状
 
         cacheCanvas = new Canvas();
+        //添加抗锯齿效果有 Paint 和 Canvas 两种方式
+        //这里是给Canvas加上抗锯齿标志
         cacheCanvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
     }
 
@@ -258,7 +262,7 @@ public class PathDrawView extends android.support.v7.widget.AppCompatImageView {
     }
 
     /**
-     * 设置保存路径
+     * 设置笔记保存路径
      * 笔迹会边写边保存成文件
      *
      * @param imagePath
